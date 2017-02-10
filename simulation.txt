@@ -3,7 +3,7 @@
 %% 2. A <- {Na.Nb}_PKa ---  B
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% définition du rôle serveur, initiant le protocole
-role serveur (A: agent,             
+role serveur (A, B: agent,             
             PKa, PKb: public_key,      
             SND, RCV: channel(dy)) 
 
@@ -17,7 +17,7 @@ played_by A def=
   transition
   
 	0.  State=0 /\ RCV(start) =|> 
-	State':=1 /\ Na':=new() /\ SND({Na'.A}_PKb)
+	State':=1 /\ Na':=new() /\ SND({Na'.A}_PKb) /\ secret(Na',na,{A,B})
 
     2.  State=1 /\ RCV({Na.Nb'}_PKa) =|> 
 	State':=2
@@ -52,6 +52,8 @@ role session(A, B: agent, PKa, PKb: public_key) def=
 
   composition 
 
+	serveur(A,B,PKa,PKb,SA,RA)
+     /\ client(A,B,PKa,PKb,SB,RB)
 
 end role
 
@@ -61,7 +63,8 @@ end role
 role environment() def=
 
     const a, b: agent,
-	  pka, pkb : public_key
+	  pka, pkb : public_key,
+	  na : protocol_id
 
     composition
 
@@ -72,6 +75,9 @@ end role
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% pour l'instant, pas de section goal ici (donc pas de propriété à vérifier)
 goal
+
+	secrecy_of na
+
 end goal
 
 
