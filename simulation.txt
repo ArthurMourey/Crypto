@@ -39,7 +39,7 @@ played_by B def=
   transition
 	
 	1. State=0 /\ RCV({Na'.A}_PKb) =|>
-	State':=1 /\ Nb':=new() /\ SND({Na'.Nb'}_PKa)
+	State':=1 /\ Nb':=new() /\ SND({Na'.Nb'}_PKa) /\ secret(Nb',nb,{A,B})
 	
 
 end role
@@ -64,7 +64,7 @@ role environment() def=
 
     const a, b: agent,
 	  pka, pkb : public_key,
-	  na : protocol_id
+	  na, nb : protocol_id
 
     composition
 
@@ -76,6 +76,7 @@ end role
 %% pour l'instant, pas de section goal ici (donc pas de propriété à vérifier)
 goal
 
+	secrecy_of nb
 	secrecy_of na
 
 end goal
