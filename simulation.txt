@@ -52,19 +52,6 @@ role session(A, B: agent, PKa, PKb: public_key) def=
 
   composition 
 
-	serveur(A,B,PKa,PKb,SA,RA)
-     /\ client(A,B,PKa,PKb,SB,RB)
-
-end role
-
-role session2(A, B: agent, PKa, PKb: public_key) def=
-
-  local SA, RA, SB, RB: channel(dy)
-
-  composition 
-
-	serveur(A,B,PKa,PKb,SA,RA)
-     /\ client(A,B,PKa,PKb,SB,RB)
 
 end role
 
