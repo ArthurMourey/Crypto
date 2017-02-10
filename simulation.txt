@@ -1,0 +1,31 @@
+%% Serveur - Objet :
+%% 1. A  - {Na.A}_PKb ----> B
+%% 2. A <- {Na.Nb}_PKa ---  B
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% définition du rôle serveur, initiant le protocole
+role serveur (A: agent,             
+            PKa, PKb: public_key,      
+            SND, RCV: channel(dy)) 
+
+played_by A def=
+
+  local State: nat, 
+        Na, Nb: text
+
+  init State:=0
+
+end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% role objet (B: agent,             
+               PKa, PKb: public_key,      
+               SND, RCV: channel(dy))
+
+played_by B def=
+
+  local State: nat, 
+        Na, Nb: text
+
+  init State:=0
+
+end role
