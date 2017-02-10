@@ -13,11 +13,19 @@ played_by A def=
         Na, Nb: text
 
   init State:=0
+  
+  transition
+  
+	0.  State=0 /\ RCV(start) =|> 
+	State':=1 /\ Na':=new() /\ SND({Na'.A}_PKb)
+
+    2.  State=1 /\ RCV({Na.Nb'}_PKa) =|> 
+	State':=2
 
 end role
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% role objet (B: agent,             
+role client (A, B: agent,             
                PKa, PKb: public_key,      
                SND, RCV: channel(dy))
 
@@ -27,5 +35,59 @@ played_by B def=
         Na, Nb: text
 
   init State:=0
+  
+  transition
+	
+	1. State=0 /\ RCV({Na'.A}_PKb) =|>
+	State':=1 /\ Nb':=new() /\ SND({Na'.Nb'}_PKa)
+	
 
 end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% définition du rôle caractérisant une session
+role session(A, B: agent, PKa, PKb: public_key) def=
+
+  local SA, RA, SB, RB: channel(dy)
+
+  composition 
+
+	serveur(A,B,PKa,PKb,SA,RA)
+     /\ client(A,B,PKa,PKb,SB,RB)
+
+end role
+
+role session2(A, B: agent, PKa, PKb: public_key) def=
+
+  local SA, RA, SB, RB: channel(dy)
+
+  composition 
+
+	serveur(A,B,PKa,PKb,SA,RA)
+     /\ client(A,B,PKa,PKb,SB,RB)
+
+end role
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% définition du rôle caractérisant le scenario à exécuter
+role environment() def=
+
+    const a, b: agent,
+	  pka, pkb : public_key
+
+    composition
+
+	session(a,b,pka,pkb) /\ session(a,b,pka,pkb) /\ session(b,a,pkb,pka)
+
+end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% pour l'instant, pas de section goal ici (donc pas de propriété à vérifier)
+goal
+end goal
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% lancement du rôle principal
+environment()
