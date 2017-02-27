@@ -1,3 +1,4 @@
+%% Ici on teste le protocole et sa robustesse quand le client ne connait pas le serveur, dans ce cas aucun échange n'est fait et donc il n'y a pas d'intrusion
 %% Serveur - Objet :
 %% 1. A  - {Na.A}_PKb ----> B
 %% 2. A <- {Na.Nb}_PKa ---  B
@@ -76,7 +77,7 @@ role environment() def=
 
     composition
 
-	session(a,b,pka,pkb,KeyListA,KeyListB) /\ session(a,b,pka,pkb,KeyListA,KeyListB) /\ session(b,a,pkb,pka,KeyListA,KeyListB)
+	session(a,b,pka,pkb,KeyListA,KeyListB) /\ session(a,b,pka,pkb,KeyListA,KeyListB) /\ session(b,a,pkb,pka,KeyListB,KeyListA)
 
 end role
 
